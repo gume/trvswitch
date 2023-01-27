@@ -13,6 +13,8 @@ import voluptuous as vol
 import homeassistant.helpers.config_validation as cv
 from homeassistant.const import CONF_NAME
 
+#from homeassistant.helpers.entity_component import async_set_icon
+
 #from homeassistant.helpers.service import async_call_service
 #from homeassistant.components.climate import async_set_temperature
 
@@ -44,6 +46,7 @@ class TRVSwitch(SwitchEntity):
 
     def __init__(self, hass, name, climate, open_temp, close_temp):
         self._attr_unique_id = "trvswitch_" + name
+        self._attr_icon = "mdi:valve"
         self._name = name
         self._climate = climate
         self._open_temp = open_temp
@@ -67,6 +70,8 @@ class TRVSwitch(SwitchEntity):
         await self._hass.services.async_call("climate", "set_preset_mode", {"entity_id": self._climate, "preset_mode": "manual"})
         await self._hass.services.async_call("climate", "set_temperature", {"entity_id": self._climate, "temperature": self._open_temp})
         self._state = True
+        self._attr_icon = "mdi:valve-open"
+        self._attr_icon_color = "on"
         self.schedule_update_ha_state()
 
     async def async_turn_off(self, **kwargs):
@@ -75,4 +80,6 @@ class TRVSwitch(SwitchEntity):
         await self._hass.services.async_call("climate", "set_preset_mode", {"entity_id": self._climate, "preset_mode": "manual"})
         await self._hass.services.async_call("climate", "set_temperature", {"entity_id": self._climate, "temperature": self._close_temp})
         self._state = False
+        self._attr_icon = "mdi:valve-closed"
+        self._attr_icon_color = "red"
         self.schedule_update_ha_state()
