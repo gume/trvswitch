@@ -1,0 +1,13 @@
+{
+  "domain": "trvswitch",
+  "name": "TRV switch helper",
+  "documentation": "https://github.com/gume/trvswitch",
+  "iot_class": "calculation",
+  "issue_tracker": "https://github.com/gume/trvswitch/issues",
+  "integration_type": "helper",
+  "version": "0.0.1",
+  "config_flow": false,
+  "codeowners": [
+    "@gume"
+  ]
+}
