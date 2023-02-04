@@ -30,8 +30,8 @@ _LOGGER: logging.Logger = logging.getLogger(__package__)
 PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend({
     vol.Required(CONF_CLIMATE): cv.string,
     vol.Required(CONF_NAME): cv.string,
-    vol.Optional(CONF_OPEN_TEMP, default=0.0): vol.Schema(float),
-    vol.Optional(CONF_CLOSE_TEMP, default=40.0): vol.Schema(float),
+    vol.Optional(CONF_OPEN_TEMP, default=40.0): vol.Schema(float),
+    vol.Optional(CONF_CLOSE_TEMP, default=0.0): vol.Schema(float),
 })
 
 async def async_setup_platform(hass, config, async_add_entities, discovery_info = None) -> None:
@@ -67,7 +67,7 @@ class TRVSwitch(SwitchEntity):
     async def async_turn_on(self, **kwargs):
         """Turn the switch on."""
         await self._hass.services.async_call("climate", "turn_on", {"entity_id": self._climate})
-        await self._hass.services.async_call("climate", "set_preset_mode", {"entity_id": self._climate, "preset_mode": "manual"})
+        #await self._hass.services.async_call("climate", "set_preset_mode", {"entity_id": self._climate, "preset_mode": "manual"})
         await self._hass.services.async_call("climate", "set_temperature", {"entity_id": self._climate, "temperature": self._open_temp})
         self._state = True
         self._attr_icon = "mdi:valve-open"
@@ -77,7 +77,7 @@ class TRVSwitch(SwitchEntity):
     async def async_turn_off(self, **kwargs):
         """Turn the switch off."""
         await self._hass.services.async_call("climate", "turn_on", {"entity_id": self._climate})
-        await self._hass.services.async_call("climate", "set_preset_mode", {"entity_id": self._climate, "preset_mode": "manual"})
+        #await self._hass.services.async_call("climate", "set_preset_mode", {"entity_id": self._climate, "preset_mode": "manual"})
         await self._hass.services.async_call("climate", "set_temperature", {"entity_id": self._climate, "temperature": self._close_temp})
         self._state = False
         self._attr_icon = "mdi:valve-closed"
